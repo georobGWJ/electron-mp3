@@ -1,0 +1,12 @@
+table, td {
+  border: 1px solid black;
+  text-align: center;
+}
+
+td {
+  width: 100px;
+}
+
+h1 {
+    color: navy;
+}

@@ -3,8 +3,30 @@
   <head>
     <meta charset="utf-8">
     <title>electron-mp3</title>
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
   </head>
   <body>
     <h1>ELECTRON-MP3</h1>
+    <hr>
+    <div class="play-control">
+      <table id='play-buttons'>
+        <tr>
+          <td id='prev-btn'><h3><< Previous</h3></td>
+          <td id='play-btn'><h3>PLAY</h3></td>
+          <td id='pause-btn'><h3>PAUSE</h3></td>
+          <td id='next-btn'><h3>Next >></h3></td>
+        </tr>
+      </table>
+    </div>
+    <hr>
+    <h2>MP3s</h2>
+    <div class="mp3-list">
+      <form>
+        <input type="radio" name="song" value="file1" checked> File 1<br>
+        <input type="radio" name="song" value="file2"> File 2<br>
+        <input type="radio" name="song" value="file3"> File 3<br><br>
+        <input type="submit" value="Choose this Song">
+      </form>
+    </div>
   </body>
 </html>
