@@ -10,7 +10,7 @@ The electron-mp3 app requires no installation as of now (01/12/2017) but probabl
 
 
 ## Run the app
-This mp3 player can be started by typing `electron .` whilst in the root directory of the app.
+This mp3 player can be started by typing either `electron .` or `npm start` whilst in the `/electron-mp3/app/` directory.
 
 ## Status
 * Very basic UI skeleton begun.
