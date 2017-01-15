@@ -43,10 +43,8 @@ var songSelectListener = function() {
 
 var volumeListener = function() {
   $('#volume-select').on("input change", function() {
-    console.log(document.getElementById('volume'));
+    var vol = $('input[name=volume]').val()
+    document.getElementById('volume-label').innerHTML = ("Volume: " + vol);
+    audio.volume = (vol/100);
   });
-}
-
-var setVolume = function() {
-  audio.volume = document.getElementById('volume');
 }
