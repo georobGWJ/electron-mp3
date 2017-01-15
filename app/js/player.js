@@ -2,18 +2,17 @@ $(document).ready(function() {
     console.log( "Player loaded..." );
     playListener();
     pauseListener();
+    songSelectListener();
 });
 
-var song = 'media/audio/flies.mp3';
 let audio
-
 
 var setSong = function(song) {
   audio = new Audio(song);
 }
 
-// Temporary test code
-setSong(song);
+// Set song to Danger by default
+setSong('media/audio/vibration.mp3');
 // End test code
 
 var playListener = function() {
@@ -25,5 +24,14 @@ var playListener = function() {
 var pauseListener = function(){
   $( '#pause-btn' ).click(function( event ) {
     audio.pause();
+  })
+}
+
+var songSelectListener = function() {
+  $( '#select-form' ).submit(function( event ) {
+    event.preventDefault();
+    console.log($('input[name="song"]:checked').val());
+    var newSong = $('input[name="song"]:checked').val();
+    setSong(newSong);
   })
 }

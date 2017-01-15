@@ -31,14 +31,35 @@
       </table>
     </div>
     <hr>
-    <h2>MP3s</h2>
-    <div class="mp3-list">
-      <form>
-        <input type="radio" name="song" value="file1" checked> File 1<br>
-        <input type="radio" name="song" value="file2"> File 2<br>
-        <input type="radio" name="song" value="file3"> File 3<br><br>
-        <input type="submit" value="Choose this Song">
-      </form>
-    </div>
+
+    <table class='player-table'>
+      <tr>
+        <td style="width:45%;">
+          <div class="song-playing">
+
+          </div>
+        </td>
+        <td style="width:45%;">
+          <h2>MP3s</h2>
+          <div class="mp3-list">
+            <form id='select-form'>
+              <input type="radio" name="song" value='media/audio/flies.mp3'> Sky Song<br>
+              <input type="radio" name="song" value='media/audio/danger.mp3'> Danger<br>
+              <input type="radio" name="song" value='media/audio/determination.mp3'> Determination<br>
+              <input type="radio" name="song" value='media/audio/vibration.mp3' checked> Vibrations<br><br>
+              <input type="submit" value="Choose this Song">
+            </form>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <div class='volume-etc'>
+          <td colspan="2">
+            This one goes to 11!
+          </td>
+        </div>
+      </tr>
+    </table>
+
   </body>
 </html>
