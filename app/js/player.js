@@ -3,12 +3,15 @@ $(document).ready(function() {
     playListener();
     pauseListener();
     songSelectListener();
+
+    volumeListener();
 });
 
 let audio
 
 var setSong = function(song) {
   audio = new Audio(song);
+  $('#song-name').text(song);
 }
 
 // Set song to Danger by default
@@ -30,8 +33,20 @@ var pauseListener = function(){
 var songSelectListener = function() {
   $( '#select-form' ).submit(function( event ) {
     event.preventDefault();
+    audio.pause();
     console.log($('input[name="song"]:checked').val());
     var newSong = $('input[name="song"]:checked').val();
     setSong(newSong);
+    audio.play();
   })
+}
+
+var volumeListener = function() {
+  $('#volume-select').on("input change", function() {
+    console.log(document.getElementById('volume'));
+  });
+}
+
+var setVolume = function() {
+  audio.volume = document.getElementById('volume');
 }

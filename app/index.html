@@ -34,12 +34,12 @@
 
     <table class='player-table'>
       <tr>
-        <td style="width:45%;">
+        <td style="width:250px;">
           <div class="song-playing">
-
+            <div id="song-name"></div>
           </div>
         </td>
-        <td style="width:45%;">
+        <td style="width:250px;">
           <h2>MP3s</h2>
           <div class="mp3-list">
             <form id='select-form'>
@@ -47,7 +47,7 @@
               <input type="radio" name="song" value='media/audio/danger.mp3'> Danger<br>
               <input type="radio" name="song" value='media/audio/determination.mp3'> Determination<br>
               <input type="radio" name="song" value='media/audio/vibration.mp3' checked> Vibrations<br><br>
-              <input type="submit" value="Choose this Song">
+              <input type="submit" value="Play this Song">
             </form>
           </div>
         </td>
@@ -56,6 +56,10 @@
         <div class='volume-etc'>
           <td colspan="2">
             This one goes to 11!
+            <form id='volume-select'>
+              <label>Volume:</label>
+              <input type="range" id="volume" value="100" min="0" max="100" step="1">
+            </form>
           </td>
         </div>
       </tr>
