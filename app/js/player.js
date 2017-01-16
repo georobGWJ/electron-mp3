@@ -49,12 +49,19 @@ var loadJSON = function(callback) {
 var setSong = function(song_id) {
   audio_id = song_id;
   console.log(media_db.local[song_id].path)
-  audio = new Audio(media_db.local[song_id].path);
+  if (audio) {
+    audio.pause();
+  }
+  audio = new Audio();
+  audio.setAttribute('src',media_db.local[song_id].path);
+  audio.load();
   $('#song-name').text(media_db.local[song_id].title);
 };
 
 var playListener = function() {
   $( '#play-btn' ).click(function( event ) {
+    var newSong = $('input[name="song"]:checked').val();
+    setSong(newSong);
     audio.play();
   })
 };
@@ -68,7 +75,6 @@ var pauseListener = function(){
 var songSelectListener = function() {
   $( '#select-form' ).submit(function( event ) {
     event.preventDefault();
-    audio.load();
     console.log($('input[name="song"]:checked').val());
     var newSong = $('input[name="song"]:checked').val();
     setSong(newSong);
@@ -79,11 +85,7 @@ var songSelectListener = function() {
 var volumeListener = function() {
   $('#volume-select').on("input change", function() {
     var vol = $('input[name=volume]').val()
-    document.getElementById('volume-label').innerHTML = ("Volume: " + vol);
+    document.getElementById('volume-label').innerHTML = ("<strong>Volume:</strong><br>" + vol);
     audio.volume = (vol/100);
   });
 };
-
-// Set song to Vibration by default
-// setSong(0);
-// End test code
