@@ -5,16 +5,17 @@ let fs = require('fs'); // And load the Filesystem Component
 
 // Create local variables to track data
 let audio;  // current song or podcast object
-let mediaDB; // list of songs in JSON format
+let mediaDB; // list of songs as a JSON object
 let audioID; // current song JSON id. I might not need this...
 
 $(document).ready(function() {
     console.log( "Player loaded..." );
     // Load local database of song attributes
+    // FIX! The line below isn't correctly assigning the object to mediaDB...
     mediaDB = loadMediaList("./app/data/local_media.json");
 
     // Dynamically populate song selection form
-    console.log(mediaDB);
+    console.log(mediaDB); // mediaDB is 'undefined' when I try this
     populateMediaList();
 
     // Set button listeners
