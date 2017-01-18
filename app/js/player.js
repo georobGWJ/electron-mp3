@@ -13,6 +13,12 @@ $(document).ready(function() {
     populateMediaList();
 });
 
+// Load essential Electron Components
+let remote = require('remote'); // Component that has the dialog Component
+let dialog = remote.require('dialog'); // Now load the Dialog Component
+let fs = require('fs'); // And load the Filesystem Component
+
+// Create local variables to track data
 let audio;
 let media_db;
 let audio_id;
