@@ -6,16 +6,14 @@ $(document).ready(function() {
     songSelectListener();
     volumeListener();
     // Load local database of song attributes
-    loadJSON(function(response) {
-      media_db = JSON.parse(response);
-    });
+    loadMediaList("./app/data/local_media.json");
     // Dynamically populate song selection form
     populateMediaList();
 });
 
 // Load essential Electron Components
-let remote = require('remote'); // Component that has the dialog Component
-let dialog = remote.require('dialog'); // Now load the Dialog Component
+let app = require('electron').remote;
+let dialog = app.dialog;
 let fs = require('fs'); // And load the Filesystem Component
 
 // Create local variables to track data
@@ -39,17 +37,16 @@ var populateMediaList = function() {
   }
 }
 
-var loadJSON = function(callback) {
-  var xobj = new XMLHttpRequest();
-  xobj.overrideMimeType("application/json");
-  xobj.open('GET', "data/local_media.json", false);
-  xobj.onreadystatechange = function () {
-    if (xobj.readyState == 4 && xobj.status == "200") {
-      // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-      callback(xobj.responseText);
+var loadMediaList = function(file) {
+  fs.readFile(file, 'utf-8', function(err, data) {
+    if(err) {
+      alert("The playlist could not be loaded:\n" + err.message)
+      return;
     }
-  };
-  xobj.send(null);
+    console.log('The playlist JSON is: ' + data);
+    media_db = JSON.parse(data);
+  })
+
 }
 
 var setSong = function(song_id) {
