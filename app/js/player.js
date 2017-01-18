@@ -1,26 +1,28 @@
+// Load essential Electron Components
+let app = require('electron').remote;
+let dialog = app.dialog; // Load the dialog Component
+let fs = require('fs'); // And load the Filesystem Component
+
+// Create local variables to track data
+let audio;  // current song or podcast object
+let mediaDB; // list of songs in JSON format
+let audioID; // current song JSON id. I might not need this...
+
 $(document).ready(function() {
     console.log( "Player loaded..." );
+    // Load local database of song attributes
+    mediaDB = loadMediaList("./app/data/local_media.json");
+
+    // Dynamically populate song selection form
+    console.log(mediaDB);
+    populateMediaList();
+
     // Set button listeners
     playListener();
     pauseListener();
     songSelectListener();
     volumeListener();
-    // Load local database of song attributes
-    loadMediaList("./app/data/local_media.json");
-    // Dynamically populate song selection form
-    console.log(media_db);
-    populateMediaList();
 });
-
-// Load essential Electron Components
-let app = require('electron').remote;
-let dialog = app.dialog;
-let fs = require('fs'); // And load the Filesystem Component
-
-// Create local variables to track data
-let audio;
-let media_db;
-let audio_id;
 
 // Functions!
 function loadMediaList(file) {
@@ -29,22 +31,22 @@ function loadMediaList(file) {
       alert("The playlist could not be loaded:\n" + err.message)
       return;
     }
-    console.log('The playlist JSON is: ' + data);
-    media_db = JSON.parse(data);
+    console.log('The playlist JSON is: ' + data); // debugging line
+    return JSON.parse(data);
   })
 }
 
 function populateMediaList() {
   var container = document.getElementById('select-form-div');
 
-  for (var idx=0; idx < media_db.length; idx++) {
+  for (var idx=0; idx < mediaDB.length; idx++) {
     // Create an <input> element, set its type and name attributes
     var input = document.createElement("input");
     input.type = "radio";
     input.name = "song";
-    input.value = media_db.local[idx].id;
+    input.value = mediaDB.local[idx].id;
     container.appendChild(input);
-    container.appendChild(document.createTextNode("\t"+media_db.local[idx].title));
+    container.appendChild(document.createTextNode("\t"+mediaDB.local[idx].title));
     // Append a line break
     container.appendChild(document.createElement("br"));
   }
@@ -52,14 +54,14 @@ function populateMediaList() {
 
 function setSong(song_id) {
   audio_id = song_id;
-  console.log(media_db.local[song_id].path)
+  console.log(mediaDB.local[song_id].path)
   if (audio) {
     audio.pause();
   }
   audio = new Audio();
-  audio.setAttribute('src',media_db.local[song_id].path);
+  audio.setAttribute('src',mediaDB.local[song_id].path);
   audio.load();
-  $('#song-name').text(media_db.local[song_id].title);
+  $('#song-name').text(mediaDB.local[song_id].title);
 };
 
 function playListener() {
