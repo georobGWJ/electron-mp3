@@ -8,6 +8,7 @@ $(document).ready(function() {
     // Load local database of song attributes
     loadMediaList("./app/data/local_media.json");
     // Dynamically populate song selection form
+    console.log(media_db);
     populateMediaList();
 });
 
@@ -21,7 +22,19 @@ let audio;
 let media_db;
 let audio_id;
 
-var populateMediaList = function() {
+// Functions!
+function loadMediaList(file) {
+  fs.readFile(file, 'utf-8', function(err, data) {
+    if(err) {
+      alert("The playlist could not be loaded:\n" + err.message)
+      return;
+    }
+    console.log('The playlist JSON is: ' + data);
+    media_db = JSON.parse(data);
+  })
+}
+
+function populateMediaList() {
   var container = document.getElementById('select-form-div');
 
   for (var idx=0; idx < media_db.length; idx++) {
@@ -37,19 +50,7 @@ var populateMediaList = function() {
   }
 }
 
-var loadMediaList = function(file) {
-  fs.readFile(file, 'utf-8', function(err, data) {
-    if(err) {
-      alert("The playlist could not be loaded:\n" + err.message)
-      return;
-    }
-    console.log('The playlist JSON is: ' + data);
-    media_db = JSON.parse(data);
-  })
-
-}
-
-var setSong = function(song_id) {
+function setSong(song_id) {
   audio_id = song_id;
   console.log(media_db.local[song_id].path)
   if (audio) {
@@ -61,7 +62,7 @@ var setSong = function(song_id) {
   $('#song-name').text(media_db.local[song_id].title);
 };
 
-var playListener = function() {
+function playListener() {
   $( '#play-btn' ).click(function( event ) {
     var newSong = $('input[name="song"]:checked').val();
     setSong(newSong);
@@ -69,13 +70,13 @@ var playListener = function() {
   })
 };
 
-var pauseListener = function(){
+function pauseListener(){
   $( '#pause-btn' ).click(function( event ) {
     audio.pause();
   })
 };
 
-var songSelectListener = function() {
+function songSelectListener() {
   $( '#select-form' ).submit(function( event ) {
     event.preventDefault();
     console.log($('input[name="song"]:checked').val());
@@ -85,7 +86,7 @@ var songSelectListener = function() {
   })
 };
 
-var volumeListener = function() {
+function volumeListener() {
   $('#volume-select').on("input change", function() {
     var vol = $('input[name=volume]').val()
     document.getElementById('volume-label').innerHTML = ("<strong>Volume:</strong><br>" + vol);
