@@ -20,6 +20,9 @@ $(document).ready(function() {
     pauseListener();
     songSelectListener();
     volumeListener();
+
+    // Test function(s)
+    printPlaylist();
 });
 
 // Functions!
@@ -27,7 +30,7 @@ function populateMediaList(file) {
   var container = document.getElementById('select-form-div');
 
   mediaDB = JSON.parse(fs.readFileSync(file,'utf8'));
-  console.log (mediaDB)
+  // console.log (mediaDB)
 
   for (var idx=0; idx < mediaDB.local.length; idx++) {
     // Create an <input> element, set its type and name attributes
@@ -85,3 +88,7 @@ function volumeListener() {
     audio.volume = (vol/100);
   });
 };
+
+function printPlaylist() {
+  console.log(mediaDB);
+}
