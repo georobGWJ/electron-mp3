@@ -10,13 +10,10 @@ let audioID; // current song JSON id. I might not need this...
 
 $(document).ready(function() {
     console.log( "Player loaded..." );
-    // Load local database of song attributes
-    // FIX! The line below isn't correctly assigning the object to mediaDB...
-    mediaDB = loadMediaList("./app/data/local_media.json");
 
     // Dynamically populate song selection form
-    console.log(mediaDB); // mediaDB is 'undefined' when I try this
-    populateMediaList();
+    // console.log(loadMediaList("./app/data/local_media.json")); // mediaDB is 'undefined' when I try this
+    populateMediaList("./app/data/local_media.json");
 
     // Set button listeners
     playListener();
@@ -26,21 +23,13 @@ $(document).ready(function() {
 });
 
 // Functions!
-function loadMediaList(file) {
-  fs.readFile(file, 'utf-8', function(err, data) {
-    if(err) {
-      alert("The playlist could not be loaded:\n" + err.message)
-      return;
-    }
-    console.log('The playlist JSON is: ' + data); // debugging line
-    return JSON.parse(data);
-  })
-}
-
-function populateMediaList() {
+function populateMediaList(file) {
   var container = document.getElementById('select-form-div');
 
-  for (var idx=0; idx < mediaDB.length; idx++) {
+  mediaDB = JSON.parse(fs.readFileSync(file,'utf8'));
+  console.log (mediaDB)
+
+  for (var idx=0; idx < mediaDB.local.length; idx++) {
     // Create an <input> element, set its type and name attributes
     var input = document.createElement("input");
     input.type = "radio";

@@ -14,4 +14,10 @@ This mp3 player can be started by typing either `electron .` or `npm start` whil
 
 ## Status
 * Basic control UI complete.
-* You can Play and Pause the single test mp3 file in the project.
+* You can Play and Pause any one of the four test mp3 files in the project.
+
+## To Do
+* Add Dialog window to add MP3 JSON to playlist file
+* Add checkboxes and logic to remove or otherwise manipulate playlist
+* Add bar to visually represent progress through playing song
+* Add logic to read ID3 tags from MP3 files
