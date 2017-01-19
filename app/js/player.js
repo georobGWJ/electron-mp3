@@ -7,13 +7,13 @@ let fs = require('fs'); // And load the Filesystem Component
 let audio;  // current song or podcast object
 let mediaDB; // list of songs as a JSON object
 let audioID; // current song JSON id. I might not need this...
+let playlistFile = "./app/data/local_media.json"; // Local playlist file
 
 $(document).ready(function() {
     console.log( "Player loaded..." );
 
     // Dynamically populate song selection form
-    // console.log(loadMediaList("./app/data/local_media.json")); // mediaDB is 'undefined' when I try this
-    populateMediaList("./app/data/local_media.json");
+    populateMediaList(playlistFile);
 
     // Set button listeners
     playListener();
@@ -23,14 +23,16 @@ $(document).ready(function() {
 
     // Test function(s)
     printPlaylist();
+    // addSongToPlaylist({ "id": 4, "title": "November Rain", "length": 900, "path": "media/audio/rain.mp3"});
+    // writePlaylist(playlistFile);
 });
 
 // Functions!
 function populateMediaList(file) {
   var container = document.getElementById('select-form-div');
 
+  // Load playlist
   mediaDB = JSON.parse(fs.readFileSync(file,'utf8'));
-  // console.log (mediaDB)
 
   for (var idx=0; idx < mediaDB.local.length; idx++) {
     // Create an <input> element, set its type and name attributes
@@ -91,4 +93,20 @@ function volumeListener() {
 
 function printPlaylist() {
   console.log(mediaDB);
+}
+
+function addSongToPlaylist(newSong) {
+  mediaDB.local.push(newSong);
+  // Test line
+  console.log(mediaDB);
+}
+
+function writePlaylist(file) {
+  fs.writeFile(file, JSON.stringify(mediaDB), function(err) {
+    if(err) {
+        return console.log(err);
+    }
+
+    console.log("The file was saved!");
+});
 }
