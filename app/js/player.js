@@ -60,9 +60,8 @@ function setSong(idx) {
   $('#song-name').text(mediaDB.local[idx].title);
 };
 
-// Note: NOT CURRENTLY USED!
 function getCheckedSongs() {
-  return document.querySelectorAll('input[name="song"]:checked')
+  return $('input[name=song]:checked');
 }
 
 function playListener() {
@@ -108,7 +107,7 @@ function deleteListener() {
 
     for (var idx=0; idx<deleteUs.length; idx++) {
       // And stick the checked ones onto an array...
-      console.log(mediaDB.local[idx].id);
+      console.log(mediaDB.local[idx]);
 
     }
   })
