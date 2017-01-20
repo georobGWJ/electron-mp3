@@ -4,7 +4,8 @@ let dialog = app.dialog; // Load the dialog Component
 let fs = require('fs'); // And load the Filesystem Component
 
 // Create local variables to track data
-let audio;  // current song or podcast object
+let audio = new Audio();  // current song or podcast object
+let audio_id; // playlist index of current media object
 let mediaDB; // list of songs as a JSON object
 let audioID; // current song JSON id. I might not need this...
 let playlistFile = "./app/data/local_media.json"; // Local playlist file
@@ -47,24 +48,29 @@ function populateMediaList(file) {
   }
 }
 
-function setSong(song_id) {
-  audio_id = song_id;
-  console.log(mediaDB.local[song_id].path)
+function setSong(idx) {
+  audio_id = idx;
+  // console.log(mediaDB.local[idx].path);
   if (audio) {
     audio.pause();
   }
-  audio = new Audio();
-  audio.setAttribute('src',mediaDB.local[song_id].path);
+  audio.setAttribute('src',mediaDB.local[idx].path);
   audio.load();
-  $('#song-name').text(mediaDB.local[song_id].title);
+  $('#song-name').text(mediaDB.local[idx].title);
 };
+
+function getCheckedSongs() {
+  return document.querySelectorAll('input[name="song"]:checked')
+}
 
 function playListener() {
   $( '#play-btn' ).click(function( event ) {
+    // FIX: This loops through all songs, not just the selected ones...
     var newSong = $('input[name="song"]:checked').val();
+    console.log("playListener: " + newSong);
     setSong(newSong);
     audio.play();
-    playNext();
+    playNextOnEnd();
   })
 };
 
@@ -75,11 +81,11 @@ function pauseListener(){
 };
 
 // Listener to start next song once one is completed.
-function playNext() {
+function playNextOnEnd() {
   audio.onended = function() {
-    setSong(2);
+    setSong(parseInt(audio_id) + 1);
     audio.play();
-    playNext();
+    playNextOnEnd();
 };
 }
 
