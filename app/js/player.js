@@ -19,6 +19,7 @@ $(document).ready(function() {
     // Set button listeners
     playListener();
     pauseListener();
+    deleteListener();
     songSelectListener();
     volumeListener();
 
@@ -59,6 +60,7 @@ function setSong(idx) {
   $('#song-name').text(mediaDB.local[idx].title);
 };
 
+// Note: NOT CURRENTLY USED!
 function getCheckedSongs() {
   return document.querySelectorAll('input[name="song"]:checked')
 }
@@ -86,7 +88,7 @@ function playNextOnEnd() {
     setSong(parseInt(audio_id) + 1);
     audio.play();
     playNextOnEnd();
-};
+  };
 }
 
 // Deprecated function. This button doesn't exist now.
@@ -99,6 +101,18 @@ function songSelectListener() {
     audio.play();
   })
 };
+
+function deleteListener() {
+  $( '#delete-btn' ).click(function( event ) {
+    var deleteUs = getCheckedSongs();
+
+    for (var idx=0; idx<deleteUs.length; idx++) {
+      // And stick the checked ones onto an array...
+      console.log(mediaDB.local[idx].id);
+
+    }
+  })
+}
 
 function volumeListener() {
   $('#volume-select').on("input change", function() {
