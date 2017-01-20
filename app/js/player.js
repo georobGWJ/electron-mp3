@@ -64,6 +64,7 @@ function playListener() {
     var newSong = $('input[name="song"]:checked').val();
     setSong(newSong);
     audio.play();
+    playNext();
   })
 };
 
@@ -73,6 +74,16 @@ function pauseListener(){
   })
 };
 
+// Listener to start next song once one is completed.
+function playNext() {
+  audio.onended = function() {
+    setSong(2);
+    audio.play();
+    playNext();
+};
+}
+
+// Deprecated function. This button doesn't exist now.
 function songSelectListener() {
   $( '#select-form' ).submit(function( event ) {
     event.preventDefault();
