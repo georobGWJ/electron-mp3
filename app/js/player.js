@@ -37,9 +37,9 @@ function populateMediaList(file) {
   for (var idx=0; idx < mediaDB.local.length; idx++) {
     // Create an <input> element, set its type and name attributes
     var input = document.createElement("input");
-    input.type = "radio";
+    input.type = "checkbox";
     input.name = "song";
-    input.value = mediaDB.local[idx].id;
+    input.value = idx;
     container.appendChild(input);
     container.appendChild(document.createTextNode("\t"+mediaDB.local[idx].title));
     // Append a line break
