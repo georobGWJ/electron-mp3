@@ -14,7 +14,8 @@ $(document).ready(function() {
     console.log( "Player loaded..." );
 
     // Dynamically populate song selection form
-    populateMediaList(playlistFile);
+    loadMediaList(playlistFile);
+    //populateMediaList();
 
     // Set button listeners
     playListener();
@@ -23,6 +24,7 @@ $(document).ready(function() {
     songSelectListener();
     volumeListener();
 
+
     // Test function(s)
     printPlaylist();
     // addSongToPlaylist({ "id": 4, "title": "November Rain", "length": 900, "path": "media/audio/rain.mp3"});
@@ -30,11 +32,15 @@ $(document).ready(function() {
 });
 
 // Functions!
-function populateMediaList(file) {
-  var container = document.getElementById('select-form-div');
-
+function loadMediaList(file) {
   // Load playlist
   mediaDB = JSON.parse(fs.readFileSync(file,'utf8'));
+  populateMediaList();
+}
+
+function populateMediaList() {
+  var container = document.getElementById('select-form-div');
+  container.innerHTML = "";
 
   for (var idx=0; idx < mediaDB.local.length; idx++) {
     // Create an <input> element, set its type and name attributes
@@ -58,6 +64,7 @@ function setSong(idx) {
   audio.setAttribute('src',mediaDB.local[idx].path);
   audio.load();
   $('#song-name').text(mediaDB.local[idx].title);
+  $('#song-duration').text(audio.duration.toString());
 };
 
 function getCheckedSongs() {
@@ -67,17 +74,25 @@ function getCheckedSongs() {
 function playListener() {
   $( '#play-btn' ).click(function( event ) {
     // FIX: This loops through all songs, not just the selected ones...
-    var newSong = $('input[name="song"]:checked').val();
-    console.log("playListener: " + newSong);
-    setSong(newSong);
-    audio.play();
-    playNextOnEnd();
+    if (audio.paused) {
+      audio.play();
+    } else {
+      var newSong = $('input[name="song"]:checked').val();
+      console.log("playListener: " + newSong);
+      setSong(newSong);
+      audio.play();
+      playNextOnEnd();
+    }
   })
 };
 
 function pauseListener(){
   $( '#pause-btn' ).click(function( event ) {
-    audio.pause();
+    if (audio.paused) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
   })
 };
 
@@ -103,11 +118,21 @@ function songSelectListener() {
 
 function deleteListener() {
   $( '#delete-btn' ).click(function( event ) {
+    event.preventDefault();
     var deleteUs = getCheckedSongs();
+    console.log(deleteUs);
 
     for (var idx=0; idx<deleteUs.length; idx++) {
-      // And stick the checked ones onto an array...
-      console.log(mediaDB.local[idx]);
+      delIndex = parseInt(deleteUs[idx].value)
+      mediaToDelete = getMediaByKey(delIndex);
+
+      if (mediaToDelete > -1) {
+        console.log(mediaToDelete);
+        delete mediaToDelete;
+          // mediaDB.splice(delIndex, 1);
+      }
+      populateMediaList();
+      // console.log(mediaDB.local[idx]);
 
     }
   })
@@ -139,4 +164,16 @@ function writePlaylist(file) {
 
     console.log("The file was saved!");
 });
+}
+
+function getMediaByKey(key) {
+    var idx, len = mediaDB.length;
+
+    for (idx = 0; idx < len; idx++) {
+        if (mediaDB.local[idx].id == key) {
+          console.log("Returned: " + mediaDB.local[idx].id)
+            return mediaDB.local[idx];
+        }
+    }
+    return -1;
 }
